@@ -1,229 +1,135 @@
 # CaseBuilder
 
-**Capture. Build. Review. Generate.**
-
-CaseBuilder transforms a legal matter from disconnected documents into a complete, verified, and continually evolving case knowledge base.
-
-It is not a legal research chatbot.
-It is not a one-shot document generator.
-It is not branded around AI.
-
-CaseBuilder is a legal workflow system for collecting the record, building the case, reviewing understanding, and generating work product only after human approval.
-
-> Capture reality once. Build understanding continuously. Generate work product only after understanding has been validated.
+<p align="center"><strong>Capture. Build. Review. Generate.</strong></p>
+<p align="center"><em>Build complete, verified case knowledge from court records.</em></p>
 
 ---
 
-## The Problem
+> CaseBuilder transforms court records into a complete, verifiable case knowledge base that attorneys review before any filing is generated.
 
-Every legal matter begins with scattered facts.
-
-The record may be spread across:
-
-- Court portals
-- Filed PDFs
-- Docket metadata
-- Emails
-- Discovery
-- Exhibits
-- Photos
-- Contracts
-- Case law
-- Attorney notes
-- Prior research
-
-Some documents contain searchable text.
-Many are scanned images.
-Important facts are buried across hundreds or thousands of pages.
-
-Before meaningful legal work can happen, someone must reconstruct the case.
-
-That reconstruction is repetitive, expensive, difficult to verify, and repeated every time the case changes.
+CaseBuilder is a legal workflow platform for collecting the record, building the case, reviewing understanding, and generating work product only after human approval.
 
 ---
 
-## The Solution
+## Why CaseBuilder?
 
-CaseBuilder creates a complete, structured, provenance-backed representation of a case.
+Legal matters begin as scattered facts: court portals, filed PDFs, docket metadata, discovery, exhibits, emails, photos, contracts, prior research, and attorney notes.
 
-Rather than treating filings as isolated documents, CaseBuilder treats them as part of a living case knowledge base.
+Some documents have searchable text. Many are scanned images. Before legal work can begin, someone has to reconstruct the record.
 
-The system captures source material, builds a verified case model, supports review and analysis, and generates filings only after the human agrees with the system's understanding of the case.
+CaseBuilder exists to perform that reconstruction once and improve it continuously as the matter changes.
 
 ---
 
-## Product Loop
+## Product philosophy
 
-CaseBuilder is not a linear pipeline.
+**Understand the case before generating the filing.**
 
-It is a repeating workflow.
+CaseBuilder does not ask attorneys to trust generated text. It asks them to review and approve the system's understanding of the case before work product is produced.
 
-```text
-Capture
-  ↓
-Build
-  ↓
-Review
-  ↓
-Generate
-  ↓
-File
-  ↓
-Capture
+Understanding comes first. Generation comes second.
+
+---
+
+## The CaseBuilder loop
+
+```mermaid
+flowchart LR
+    Capture[Capture] --> Build[Build]
+    Build --> Review[Review]
+    Review --> Generate[Generate]
+    Generate --> File[File]
+    File --> Capture
 ```
 
-Every new filing becomes new source material.
-Every stage can be revisited.
-Every iteration improves the case.
+CaseBuilder is not a linear pipeline. Every new filing becomes new source material. Every stage can be revisited.
+
+---
+
+## Product architecture
+
+```mermaid
+flowchart TD
+    Rake[Rake: capture engine]
+    Bundle[Capture Bundle]
+    Builder[CaseBuilder]
+    KB[Case Knowledge Base]
+    Review[Review workspace]
+    Generate[Generate workspace]
+    Filed[Filed work product]
+
+    Rake --> Bundle
+    Bundle --> Builder
+    Builder --> KB
+    KB --> Review
+    Review --> Generate
+    Generate --> Filed
+    Filed --> Rake
+```
 
 ---
 
 ## Workspaces
 
-CaseBuilder is organized around four major workspaces.
-
-Each workspace has its own internal loop.
-
-```text
-CaseBuilder
-├── Capture
-├── Build
-├── Review
-└── Generate
+```mermaid
+flowchart TD
+    CB[CaseBuilder]
+    CB --> C[Capture]
+    CB --> B[Build]
+    CB --> R[Review]
+    CB --> G[Generate]
 ```
 
----
+### Capture
 
-## Capture Workspace
+Powered by Rake.
 
-Purpose: collect and preserve source material.
+Capture collects and preserves source material.
 
-Capture is powered by Rake.
-
-Responsibilities:
-
-- Connect to court portals
-- Collect filed documents
-- Pull docket metadata
-- Gather related content
-- Link references
+- Connect
+- Collect
+- Pull
+- Link
 - Preserve provenance
 - Produce the Capture Bundle
 
-Capture does not analyze.
-Capture preserves reality.
+Capture never analyzes. It preserves reality.
 
-### Capture Loop
+### Build
 
-```text
-Collect
-  ↓
-Link
-  ↓
-Validate
-  ↓
-Repeat
-```
+Build transforms the Capture Bundle into a verified case knowledge base.
 
----
-
-## Build Workspace
-
-Purpose: transform the Capture Bundle into a verified case knowledge base.
-
-Responsibilities:
-
-- Explode filed PDFs
+- Explode PDFs
 - Detect filing, document, and page boundaries
-- Render every page image
-- Extract searchable PDF text where available
-- Add page-level transcription for scanned/image-only pages
+- Render page images
+- Extract searchable PDF text when available
+- Add page-level transcription for scanned or image-only pages
 - Preserve the provenance chain
-- Compute quality and review metadata
-- Build equivalent filesystem and database projections
-- Seal and verify the case record
+- Compute quality metadata
+- Verify completeness
+- Build filesystem and DuckDB projections
 
-Build does not argue.
-Build makes the case readable, traceable, and complete.
+Build does not argue. It constructs the factual foundation.
 
-### Build Loop
+### Review
 
-```text
-Explode
-  ↓
-Transcribe
-  ↓
-Verify
-  ↓
-Repeat
-```
-
----
-
-## Review Workspace
-
-Purpose: develop and validate understanding of the case.
-
-The Review workspace is where discovery, issue spotting, evidence organization, and strategy development happen.
-
-Responsibilities:
+Review transforms evidence into understanding.
 
 - Timeline reconstruction
 - Financial reconstruction
-- Evidence mapping
+- Evidence maps
 - Filing chronology
 - Contradiction detection
-- Missing information discovery
+- Missing evidence discovery
 - Authority organization
 - Exhibit organization
 - Strategy development
-- Questions requiring human judgment
 
-Review does not generate filings.
-Review produces an evidence-backed understanding of the case.
+Review produces understanding, not filings.
 
-### Review Loop
+### Generate
 
-```text
-Discover
-  ↓
-Analyze
-  ↓
-Question
-  ↓
-Refine
-  ↓
-Repeat
-```
-
----
-
-## Human Review Gate
-
-The human does not merely review a generated filing.
-
-The human reviews the system's understanding of the case before filing generation begins.
-
-The human may:
-
-- Approve the understanding
-- Reject it
-- Correct it
-- Add context
-- Request more evidence
-- Request regeneration
-
-Only after the human agrees that the case has been accurately understood does the system generate work product.
-
-This is the core safety and quality principle of CaseBuilder.
-
----
-
-## Generate Workspace
-
-Purpose: turn approved understanding into legal work product.
-
-Examples:
+Generate transforms approved understanding into work product.
 
 - Motions
 - Responses
@@ -232,162 +138,124 @@ Examples:
 - Discovery
 - Appendices
 - Exhibits
-- E-filing packets
+- Filing packets
 
-Generation never invents evidence.
-Every factual statement must trace back to the verified case knowledge base.
+Every generated statement must trace back to evidence.
 
-### Generate Loop
+---
 
-```text
-Draft
-  ↓
-Validate
-  ↓
-Review
-  ↓
-Repeat
+## Human review gate
+
+The attorney reviews the system's understanding of the case before generation begins.
+
+```mermaid
+flowchart LR
+    Evidence[Verified evidence] --> Packet[Case understanding review]
+    Packet --> Human[Human review]
+    Human -->|Approve| Generate[Generate work product]
+    Human -->|Revise| Packet
 ```
+
+The human may approve, reject, correct, add context, request more evidence, or request regeneration.
 
 ---
 
 ## Case Knowledge Base
 
-The output of CaseBuilder is not just a document folder.
+```mermaid
+flowchart TD
+    KB[Case Knowledge Base]
+    KB --> Record[Court record]
+    KB --> Filings[Filings]
+    KB --> Docs[Documents]
+    KB --> Pages[Pages]
+    KB --> Images[Page images]
+    KB --> Text[Transcriptions]
+    KB --> Metadata[Metadata]
+    KB --> Provenance[Provenance]
+    KB --> Authorities[Authorities]
+    KB --> Discovery[Discovery]
+    KB --> Analysis[Analysis]
+    KB --> Strategy[Strategy]
+    KB --> WorkProduct[Work product]
+```
 
-It is a structured case knowledge base.
-
-It contains:
-
-- Court record
-- Filings
-- Documents
-- Pages
-- Page images
-- Transcriptions
-- Metadata
-- Provenance
-- References
-- Authorities
-- Exhibits
-- Discovery
-- Analysis
-- Strategy
-- Work product
-
-Each domain can evolve while remaining tied to the underlying evidence.
+Each knowledge domain evolves independently while remaining connected through provenance.
 
 ---
 
 ## Canonical Case Record
 
-At the foundation of the knowledge base is the Canonical Case Record.
+At the center of the knowledge base is the Canonical Case Record: a deterministic, verifiable representation of the factual record derived from the Capture Bundle.
 
-The Record is a deterministic, verifiable representation of the factual record derived from the Capture Bundle.
+```mermaid
+flowchart TD
+    Bundle[Capture Bundle]
+    Record[Canonical Case Record]
+    Files[Filesystem projection]
+    DB[DuckDB projection]
 
-It contains:
+    Bundle --> Record
+    Record --> Files
+    Record --> DB
+```
 
-- Court metadata
-- Filing hierarchy
-- Document hierarchy
-- Page hierarchy
-- Page images
-- Page transcriptions
-- Provenance
-- Quality metadata
-- Relationships
-
-The filesystem projection and database projection are equivalent renderings of the same Record.
-
-Neither projection is the source of truth.
-Both are reproducible from the Capture.
+The filesystem projection and DuckDB projection are equivalent renderings of the same Record. Neither projection is the source of truth. Both are reproducible.
 
 ---
 
-## Ecosystem Components
+## Ecosystem
 
-CaseBuilder pulls together capabilities that currently exist across several projects.
+| Project | Responsibility |
+|---|---|
+| Rake | Capture, collect, pull, link, and preserve provenance |
+| CaseForge | Explode, transcribe, verify, and build the Canonical Case Record |
+| Lawnlord | Review HOA matters, organize evidence, reconstruct timelines, and develop strategy |
+| Today | Generate filings, exhibits, and filing packets from approved understanding |
 
-```text
-Rake
-  capture / collect / pull / link / actions
-
-CaseForge
-  explode / transcribe / canonical record / projections / verify
-
-Lawnlord
-  HOA case review / evidence analysis / timeline / strategy
-
-Today
-  filing generation / work product assembly
-```
-
-The dream state is a single comprehensive workflow:
-
-```text
-Capture the record
-  ↓
-Build the case
-  ↓
-Review the understanding
-  ↓
-Generate the filing
-  ↓
-File
-  ↓
-Capture the new record
+```mermaid
+flowchart LR
+    Rake[Rake] --> Forge[CaseForge]
+    Forge --> Lawn[Lawnlord]
+    Lawn --> Today[Today]
+    Today --> Court[Court]
+    Court --> Rake
 ```
 
 ---
 
-## Design Principles
+## Design principles
 
-### Evidence First
-
-Every conclusion must trace back to evidence.
-
-### Provenance Always
-
-Nothing enters the system without a source chain.
-
-### Human Judgment
-
-The system supports attorneys. It does not replace legal judgment.
-
-### Review Before Generation
-
-Work product is generated only after the human approves the system's understanding.
-
-### Iterative by Design
-
-Every stage loops. Every stage can improve. Every filing can become new source material.
-
-### No Black Boxes
-
-The system must be inspectable, reproducible, and verifiable.
+- Evidence first
+- Provenance always
+- Review before generation
+- Human judgment
+- Iterative by design
+- Transparent by default
 
 ---
 
-## Product Philosophy
+## Roadmap
 
-CaseBuilder is designed to eliminate repetitive reconstruction of the factual record so attorneys can focus on judgment, strategy, and advocacy.
+### Milestone 1: Build the case
 
-The system does not ask attorneys to trust generated text.
+Capture Bundle, PDF explosion, page transcription, provenance, verification, filesystem projection, DuckDB projection, and Canonical Case Record.
 
-It asks them to validate the case understanding before generating work product.
+### Milestone 2: Understand the case
 
-Understanding comes first.
-Generation comes second.
+Discovery assistance, evidence maps, financial reconstruction, timelines, contradictions, missing evidence, strategy workspaces, and human review packets.
+
+### Milestone 3: Generate the case
+
+Motions, discovery, declarations, exhibits, filing packets, and continuous litigation workflow.
 
 ---
 
-## Long-Term Vision
+## Long-term vision
 
-CaseBuilder becomes the trusted legal workspace where every matter is continuously collected, organized, understood, reviewed, and improved.
+CaseBuilder becomes the operating system for litigation.
 
-Every filing strengthens the knowledge base.
-Every review improves understanding.
-Every decision remains traceable back to evidence.
+Every matter begins with evidence. Every piece of evidence becomes structured knowledge. Every review strengthens understanding. Every filing improves the case.
 
 The goal is not automated lawyering.
 
