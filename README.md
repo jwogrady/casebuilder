@@ -11,24 +11,29 @@
   <a href="PRODUCT.md">Product</a> ·
   <a href="ARCHITECTURE.md">Architecture</a> ·
   <a href="ROADMAP.md">Roadmap</a> ·
+  <a href="MANIFESTO.md">Manifesto</a> ·
   <a href="docs/adr">ADRs</a>
 </p>
 
 ---
 
-## The thesis
+## Every lawsuit starts as a pile of documents.
 
-Most legal software starts with drafting.
+Court filings. Exhibits. Docket entries. Emails. Discovery. Orders. Receipts. Photos. Prior research. Attorney notes.
 
-CaseBuilder starts with understanding.
+A case does not become usable until someone turns that pile into understanding.
 
-Court records are not just documents. They are evidence, chronology, claims, parties, obligations, contradictions, authorities, and work product waiting to be organized.
+**CaseBuilder builds that understanding.**
 
-CaseBuilder turns the record into a verified case knowledge base before anything is generated.
+It captures the record, reconstructs the case, makes the evidence traceable, and generates work product only after the human approves the system's understanding.
 
 ---
 
-## The rule
+## The difference
+
+Most legal software starts with drafting.
+
+CaseBuilder starts with knowledge.
 
 ```text
 Evidence before opinion.
@@ -45,76 +50,108 @@ People before automation.
 flowchart LR
     Court[Court record] --> Capture[Capture]
     Capture --> Build[Build]
-    Build --> Review[Review]
-    Review --> Generate[Generate]
-    Generate --> Filing[Filed work product]
-    Filing --> Court
+    Build --> Knowledge[Case knowledge]
+    Knowledge --> Review[Review]
+    Review --> Work[Work product]
+    Work --> Court
 ```
 
-Every filed result becomes new source material.
+Every new filing becomes new source material.
 
-The case gets stronger every time the loop runs.
+Every pass through the loop makes the case stronger.
 
 ---
 
-## The system
+## The product
 
 ```mermaid
 flowchart TD
-    Rake[Rake<br/>capture layer]
-    CaptureBundle[Capture Bundle<br/>immutable source material]
-    Builder[CaseBuilder<br/>case knowledge engine]
-    Record[Canonical Case Record<br/>verified factual record]
-    Review[Review workspace<br/>evidence, issues, strategy]
-    Generate[Generate workspace<br/>motions, exhibits, packets]
-    Court[Court<br/>new filings]
+    Source[Source material]
+    Capture[Capture bundle]
+    Record[Canonical case record]
+    Knowledge[Case knowledge]
+    Review[Approved understanding]
+    Work[Filing package]
 
-    Rake --> CaptureBundle
-    CaptureBundle --> Builder
-    Builder --> Record
-    Record --> Review
-    Review --> Generate
-    Generate --> Court
-    Court --> Rake
+    Source --> Capture
+    Capture --> Record
+    Record --> Knowledge
+    Knowledge --> Review
+    Review --> Work
 ```
 
----
+CaseBuilder is not a chatbot.
 
-## Workspaces
+CaseBuilder is not a one-shot generator.
 
-### Capture
-
-Collect everything. Preserve the chain.
-
-Powered by Rake.
-
-### Build
-
-Explode the record. Transcribe pages. Verify completeness.
-
-Produces the Canonical Case Record.
-
-### Review
-
-Find the story inside the evidence.
-
-Timelines, contradictions, gaps, exhibits, authorities, and strategy.
-
-### Generate
-
-Draft only from approved understanding.
-
-Motions, discovery, declarations, appendices, and filing packets.
+CaseBuilder is the system that turns the legal record into reviewed, verified, usable case knowledge.
 
 ---
 
-## What makes it different
+## The workspaces
 
-CaseBuilder does not ask a lawyer to trust generated text.
+<table>
+  <tr>
+    <td width="25%"><strong>Capture</strong><br /><br />Collect everything. Preserve the chain.</td>
+    <td width="25%"><strong>Build</strong><br /><br />Explode the record. Verify the foundation.</td>
+    <td width="25%"><strong>Review</strong><br /><br />Find the story inside the evidence.</td>
+    <td width="25%"><strong>Generate</strong><br /><br />Produce work product from approved understanding.</td>
+  </tr>
+</table>
 
-It asks the lawyer to approve the system's understanding first.
+---
+
+## Case knowledge
+
+CaseBuilder treats filings as structured knowledge, not static PDFs.
+
+A usable case knows:
+
+- what was filed
+- when it was filed
+- who filed it
+- what pages support it
+- what facts are disputed
+- what evidence is missing
+- what contradictions matter
+- what has already been reviewed
+- what work product depends on it
+
+Knowledge is not guessed.
+
+Knowledge is built.
+
+---
+
+## The human gate
+
+```mermaid
+flowchart LR
+    Evidence[Verified evidence] --> Understanding[Case understanding]
+    Understanding --> Human[Human review]
+    Human -->|approve| Generate[Generate]
+    Human -->|revise| Understanding
+```
+
+The system does not ask the user to trust a generated document.
+
+It asks the user to approve the understanding first.
+
+That is the safety model.
 
 That is the product.
+
+---
+
+## The four promises
+
+**We do not invent evidence.**
+
+**We do not hide provenance.**
+
+**We do not skip human review.**
+
+**We do not ask you to trust a black box.**
 
 ---
 
@@ -123,6 +160,7 @@ That is the product.
 ```text
 casebuilder/
 ├── README.md
+├── MANIFESTO.md
 ├── PRODUCT.md
 ├── ARCHITECTURE.md
 ├── ROADMAP.md
@@ -146,24 +184,45 @@ casebuilder/
 
 ---
 
+## Ecosystem
+
+```mermaid
+flowchart LR
+    Rake[Rake<br/>capture] --> Builder[CaseBuilder<br/>build]
+    Builder --> Review[Review<br/>understand]
+    Review --> Today[Today<br/>generate]
+    Today --> Court[Court<br/>file]
+    Court --> Rake
+```
+
+The implementation may live across multiple repositories for now.
+
+The product is one system.
+
+---
+
 ## Status
 
 CaseBuilder is at the product architecture stage.
 
-The current priority is to define the contracts between capture, build, review, and generation before collapsing implementation details into one codebase.
+The priority is to define clean contracts between capture, build, review, and generation before collapsing implementation details into a single codebase.
 
 ---
 
 ## Vision
 
-CaseBuilder becomes the trusted workspace where every legal matter is collected, structured, reviewed, and improved.
+Every legal matter deserves a living body of verified knowledge.
 
-Every page is traceable.
+Not a folder.
 
-Every conclusion is grounded.
+Not a database.
 
-Every filing is generated from approved understanding.
+Not a pile of generated text.
 
-The goal is not automated lawyering.
+A record that grows with the case.
 
-The goal is better lawyering.
+A system that makes the facts visible.
+
+A workflow that lets people practice law instead of reconstructing paperwork.
+
+That is CaseBuilder.
