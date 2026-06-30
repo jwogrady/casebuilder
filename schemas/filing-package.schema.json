@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://casebuilder.dev/schemas/filing-package.schema.json",
+  "title": "Filing Package",
+  "type": "object",
+  "required": ["schemaVersion", "packageId", "recordId", "items"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "packageId": { "type": "string" },
+    "recordId": { "type": "string" },
+    "reviewId": { "type": "string" },
+    "items": { "type": "array", "items": { "type": "object" } },
+    "provenance": { "type": "object" }
+  },
+  "additionalProperties": true
+}
