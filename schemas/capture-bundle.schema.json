@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://casebuilder.dev/schemas/capture-bundle.schema.json",
+  "title": "Capture Bundle",
+  "type": "object",
+  "required": ["schemaVersion", "case", "manifest", "files"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "case": {
+      "type": "object",
+      "required": ["caseId", "caseNumber"],
+      "properties": {
+        "caseId": { "type": "string" },
+        "caseNumber": { "type": "string" },
+        "court": { "type": "string" },
+        "style": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "manifest": {
+      "type": "object",
+      "required": ["capturedAt"],
+      "properties": {
+        "capturedAt": { "type": "string", "format": "date-time" },
+        "source": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string" },
+          "sha256": { "type": "string" },
+          "mimeType": { "type": "string" },
+          "sourceUrl": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}
