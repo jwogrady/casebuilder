@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://casebuilder.dev/schemas/canonical-case-record.schema.json",
+  "title": "Canonical Case Record",
+  "type": "object",
+  "required": ["schemaVersion", "recordId", "sourceCapture", "case", "filings", "documents", "pages"],
+  "properties": {
+    "schemaVersion": { "type": "string" },
+    "recordId": { "type": "string" },
+    "recordHash": { "type": "string" },
+    "sourceCapture": {
+      "type": "object",
+      "required": ["captureId"],
+      "properties": {
+        "captureId": { "type": "string" },
+        "captureHash": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "case": { "type": "object", "additionalProperties": true },
+    "filings": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+    "documents": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+    "pages": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+    "quality": { "type": "object", "additionalProperties": true },
+    "provenance": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": true
+}
